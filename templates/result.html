@@ -1,0 +1,100 @@
+{% comment %} <!DOCTYPE html>
+<html>
+<head>
+    <title>Detection Result</title>
+</head>
+<body>
+    <h1>Detection Result</h1>
+    <p><strong>Uploaded Image:</strong></p>
+    <img src="{{ mri_image.image.url }}" alt="MRI Image" style="max-width: 400px;">
+    <p><strong>Result:</strong> {{ mri_image.result }}</p>
+    <a href="/">Upload Another Image</a>
+</body>
+</html> {% endcomment %}
+
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Upload MRI Image</title>
+        <!-- Bootstrap CSS for styling -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Custom CSS -->
+        <style>
+            body {
+                padding-top: 60px;
+                background-image: url("{% static 'mri.webp' %}"); /* Add your background image here */
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+                color: white; /* White text color for better readability on background */
+            }
+            .content-container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for content */
+                border-radius: 8px;
+            }
+            footer {
+                background-color: #f8f9fa;
+                text-align: center;
+                padding: 10px;
+                width: 100%;
+            }
+        </style>
+    </head>
+<body>
+    <!-- Navbar -->
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">MRI Detection</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="content-container">
+            <h2>Analysis Result</h2>
+
+            <div class="result">
+                <h3>Result: {{ result }}</h3>
+                <img src="{{ mri_image.image.url }}" alt="MRI Image" style="max-width: 400px;">
+                <p>Your MRI image has been successfully analyzed. Below is the result of the analysis.</p>
+                <p><strong>Result:</strong> {{ mri_image.result }}</p>
+            </div>
+            
+
+            {% comment %} <a href="{% url 'upload' %}" class="btn btn-primary">Upload Another Image</a> {% endcomment %}
+            <a href="/">Upload Another Image</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    {% comment %} <footer>
+        <p>&copy; 2025 Knee MRI Detection | All Rights Reserved</p>
+    </footer> {% endcomment %}
+</body>
+</html>
+
