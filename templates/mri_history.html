@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your MRI Upload History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        img {
+            width: 100px;
+        }
+        .back-btn {
+            margin-top: 20px;
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: blue;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Your MRI Upload History</h2>
+
+    {% if mri_images %}
+        <table>
+            <tr>
+                <th>Image</th>
+                <th>Uploaded At</th>
+                <th>Result</th>
+            </tr>
+            {% for image in mri_images %}
+            <tr>
+                <td>
+                    <img src="{{ image.image.url }}" alt="MRI Image">
+                </td>
+                <td>{{ image.uploaded_at }}</td>
+                <td>{{ image.result }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No MRI images uploaded yet.</p>
+    {% endif %}
+
+    <a href="{% url 'dashboard' %}" class="back-btn">Back to Dashboard</a>
+
+</body>
+</html>

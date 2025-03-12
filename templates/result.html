@@ -27,11 +27,14 @@
         <style>
             body {
                 padding-top: 60px;
+                padding-bottom:0;
                 background-image: url("{% static 'mri.webp' %}"); /* Add your background image here */
                 background-size: cover;
                 background-position: center;
                 background-attachment: fixed;
                 color: white; /* White text color for better readability on background */
+                margin: 0;
+    
             }
             .content-container {
                 max-width: 800px;
@@ -40,18 +43,55 @@
                 background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for content */
                 border-radius: 8px;
             }
+            .navbar {
+                padding: 8px 10px;
+                height: 100px;
+                background-color: #b7bcbc;
+            }
+            .navbar-brand {
+                font-size: 2rem; /* Increased font size */
+                font-family: 'Georgia', serif; /* Stylish font */
+                border: none;
+    
+            }
+            .nav-link {
+                font-size: 1.2rem; /* Increased font size */
+                font-family: 'Georgia', serif; /* Stylish font */
+                margin:10px;
+                transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+            }
+            .nav-link:hover {
+                background-color: #0056b3; /* Darker blue background on hover */
+                color: #fff; /* White text on hover */
+                border-radius: 5px; /* Rounded corners */
+            }
             footer {
+                background-color: #343a40;
+                color: white;
+                padding: 20px 0;
+                margin:0;
+                {% comment %} margin-left:100px; {% endcomment %}
+            }
+            footer a {
+                color: #ffc107;
+                text-decoration: none;
+                transition: color 0.3s;
+            }
+            footer a:hover {
+                color: #fff;
+            }
+            {% comment %} footer {
                 background-color: #f8f9fa;
                 text-align: center;
                 padding: 10px;
                 width: 100%;
-            }
+            } {% endcomment %}
         </style>
     </head>
 <body>
     <!-- Navbar -->
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-primary fixed-top">
+    {% comment %} <nav class="navbar navbar-expand-lg navbar-light bg-primary fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">MRI Detection</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -61,7 +101,8 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Home</a>
+                        <a class="nav-link active" href="{% url 'dashboard' %}" target="_self">Home</a>
+
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
@@ -72,7 +113,47 @@
                 </ul>
             </div>
         </div>
+    </nav> {% endcomment %}
+
+
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            {% comment %} <a class="navbar-brand" href="#">KneeLSight - An Insightful View of MRI</a> {% endcomment %}
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'logo.webp' %}" alt="KneeLSight Logo" height="100" width="150">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a></li>
+                        
+                        {% comment %} <li class="nav-item"><a class="nav-link" href="{% url 'register_hospital' %}">Register Hospital</a></li> {% endcomment %}
+                        {% if not user.hospital %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'register_hospital' %}">Register Hospital</a></li>
+                        {% endif %}
+
+                        <li class="nav-item"><a class="nav-link" href="{% url 'user_logout' %}">Logout</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Admin</a></li>
+
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'user_login' %}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'user_register' %}">Register</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Admin</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
     </nav>
+    <br>
+    <br>
+    <br>
+
     <!-- Main Content -->
     <div class="main-container">
         <div class="content-container">
@@ -83,13 +164,32 @@
                 <img src="{{ mri_image.image.url }}" alt="MRI Image" style="max-width: 400px;">
                 <p>Your MRI image has been successfully analyzed. Below is the result of the analysis.</p>
                 <p><strong>Result:</strong> {{ mri_image.result }}</p>
+               
             </div>
             
 
-            {% comment %} <a href="{% url 'upload' %}" class="btn btn-primary">Upload Another Image</a> {% endcomment %}
-            <a href="/">Upload Another Image</a>
+            {% comment %} <a href="{% url 'upload' %}" class="btn btn-primary">Upload Another Image</a>  {% endcomment %}
+             <a href="{% url 'upload_image' %}">Upload Another Image</a>
         </div>
+    </div> 
+
+    <div class="result-info  text-center text-dark " style="background-color: #b7bcbc;margin-bottom:0;margin-top:50px;" >
+        <h4>Class Information</h4>
+        <ul style="list-style-type: none;margin-bottom:0;">
+            <li><strong>Class 0:</strong> No damage</li>
+            <li><strong>Class 1:</strong> Partially damaged</li>
+            <li><strong>Class 2:</strong> Damaged</li>
+            {% comment %} <li><strong>Class 3:</strong> Highly damaged</li> {% endcomment %}
+        </ul>
     </div>
+
+    
+    <footer>
+        <div class="container" style="text-align: center;margin-top:0;">
+            <p>&copy; 2025 KneeLSight. All rights reserved.</p>
+            <p>Contact us: <a href="mailto:info@kneelsight.com">info@kneelsight.com</a></p>
+        </div>
+    </footer>
 
     <!-- Footer -->
     {% comment %} <footer>

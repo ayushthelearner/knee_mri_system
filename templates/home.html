@@ -1,0 +1,373 @@
+ {% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KneeLSight - An Insightful View of MRI</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+        .header-image img {
+            max-height: 600px;
+            width: 100%;
+            object-fit: cover;
+        }
+        .container {
+            padding: 50px 0;
+        }
+        .steps {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: left;
+            display: inline-block;
+        }
+        .steps p {
+            margin-bottom: 10px;
+        }
+        .navbar {
+            
+            height:100px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">KneeLSight</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'register_hospital' %}">Register Hospital</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'user_logout' %}">Logout</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'user_login' %}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'user_register' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    {% load static %}
+    <div class="header-image">
+    <img src="{% static 'KneeLSight_Logo.webp' %}" alt="KneeLSight - An Insightful View of MRI">
+    </div>
+    
+    <div class="container">
+        <h1 class="display-5">Welcome to KneeLSight</h1>
+        <p class="lead">An advanced platform for knee MRI analysis.</p>
+        <p>
+            Greetings! Welcome to <strong>KneeLSight</strong>, your trusted platform for advanced knee MRI analysis. 
+            Knee-related injuries and conditions can be challenging to diagnose, and accurate insights are essential for effective treatment. 
+            That's where KneeLSight steps in – a cutting-edge solution designed to provide reliable MRI interpretations with ease. 
+        </p>
+        <h3>How It Works:</h3>
+        <div class="steps">
+            <p><strong>Step 1:</strong> Sign up</p>
+            <p><strong>Step 2:</strong> Register your hospital</p>
+            <p><strong>Step 3:</strong> Upload knee MRI images</p>
+            <p><strong>Step 4:</strong> Receive MRI results</p>
+            <p><strong>Step 5:</strong> Access MRI image history</p>
+        </div>
+        <p>
+            Our AI-powered system ensures quick and accurate MRI analysis, streamlining the workflow for medical professionals and healthcare institutions. 
+            Join us today, register your hospital, and start leveraging the power of AI for precise knee diagnostics!
+        </p>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>  {% endcomment %}
+
+
+
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KneeLSight - An Insightful View of MRI</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+        .header-image img {
+            max-height: 600px;
+            width: 100%;
+            object-fit: cover;
+        }
+        .content-container {
+            background-color: #fff8e1; /* Creamy background */
+            padding: 50px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .steps {
+            margin-top: 20px;
+            text-align: left;
+            display: inline-block;
+            padding: 20px;
+            border-left: 4px solid #007bff;
+        }
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .step-icon {
+            background: #007bff;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        .navbar {
+            padding: 8px 10px;
+            height:100px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">KneeLSight-An Insightful View of MRI</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'register_hospital' %}">Register Hospital</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'user_logout' %}">Logout</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'user_login' %}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'user_register' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="header-image">
+        <img src="{% static 'Knee_photo1.jpg' %}" alt="KneeLSight - An Insightful View of MRI">
+    </div>
+    
+    <div class="container content-container">
+        <h1 class="display-5">Welcome to KneeLSight</h1>
+        <p class="lead">An advanced platform for knee MRI analysis.</p>
+        <p>
+            Greetings! Welcome to <strong>KneeLSight</strong>, your trusted platform for advanced knee MRI analysis. 
+            Knee-related injuries and conditions can be challenging to diagnose, and accurate insights are essential for effective treatment. 
+            That's where KneeLSight steps in – a cutting-edge solution designed to provide reliable MRI interpretations with ease. 
+        </p>
+        <h3>How It Works:</h3>
+        <div class="steps">
+            <div class="step"><span class="step-icon">1</span> Sign up</div>
+            <div class="step"><span class="step-icon">2</span> Register your hospital</div>
+            <div class="step"><span class="step-icon">3</span> Upload knee MRI images</div>
+            <div class="step"><span class="step-icon">4</span> Receive MRI results</div>
+            <div class="step"><span class="step-icon">5</span> Access MRI image history</div>
+        </div>
+        <p>
+            Our AI-powered system ensures quick and accurate MRI analysis, streamlining the workflow for medical professionals and healthcare institutions. 
+            Join us today, register your hospital, and start leveraging the power of AI for precise knee diagnostics!
+        </p>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> {% endcomment %}
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KneeLSight - An Insightful View of MRI</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #fff8e1;
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            padding-top: 100px; 
+        }
+        .header-image img {
+            max-height: 600px;
+            width: 100%;
+            object-fit: cover;
+        }
+        .content-container {
+            background-color: #fff8e1; /* Creamy background */
+            padding: 50px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .steps {
+            margin-top: 20px;
+            text-align: left;
+            display: inline-block;
+            padding: 20px;
+            border-left: 4px solid #007bff;
+            border-right: 4px solid #007bff;
+        }
+        .step {
+            display: flex;
+            align-items: center;
+            margin-left:20px;
+            margin-bottom: 15px;
+            font-size: 1.5rem; /* Increased font size */
+            font-weight: bold;
+            font-family: 'Georgia', serif; /* Stylish font */
+        }
+        .step-icon {
+            background: #007bff;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        .navbar {
+            padding: 8px 10px;
+            height: 100px;
+            background-color: #b7bcbc;
+        }
+        .navbar-brand {
+            font-size: 2rem; /* Increased font size */
+            font-family: 'Georgia', serif; /* Stylish font */
+            border: none;
+
+        }
+        .nav-link {
+            font-size: 1.2rem; /* Increased font size */
+            font-family: 'Georgia', serif; /* Stylish font */
+            margin:10px;
+            transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+        }
+        .nav-link:hover {
+            background-color: #0056b3; /* Darker blue background on hover */
+            color: #fff; /* White text on hover */
+            border-radius: 5px; /* Rounded corners */
+        }
+        footer {
+            background-color: #343a40;
+            color: white;
+            padding: 20px 0;
+            margin-top: 20px;
+            padding-left:100px;
+        }
+        footer a {
+            color: #ffc107;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        footer a:hover {
+            color: #fff;
+        }
+        
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            {% comment %} <a class="navbar-brand" href="#">KneeLSight - An Insightful View of MRI</a> {% endcomment %}
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'logo.webp' %}" alt="KneeLSight Logo" height="100" width="150">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a></li>
+                        
+                        {% comment %} <li class="nav-item"><a class="nav-link" href="{% url 'register_hospital' %}">Register Hospital</a></li> {% endcomment %}
+                        {% if not user.hospital %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'register_hospital' %}">Register Hospital</a></li>
+                        {% endif %}
+
+                        <li class="nav-item"><a class="nav-link" href="{% url 'user_logout' %}">Logout</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Admin</a></li>
+
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'user_login' %}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'user_register' %}">Sign-Up</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Admin</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="header-image">
+        <img src="{% static 'Knee_photo1.jpg' %}" alt="KneeLSight - An Insightful View of MRI">
+    </div>
+    
+    <div class="container content-container">
+        <h1 class="display-4" style="font-family: 'Georgia', serif;">Welcome to KneeLSight</h1>
+        <p class="lead" style="font-size: 1.5rem; font-family: 'Georgia', serif;">An advanced platform for knee MRI analysis.</p>
+        <p style="font-size: 1.2rem; font-family: 'Georgia', serif;">
+            Greetings! Welcome to <strong>KneeLSight</strong>, your trusted platform for advanced knee MRI analysis. 
+            Knee-related injuries and conditions can be challenging to diagnose, and accurate insights are essential for effective treatment. 
+            That's where KneeLSight steps in – a cutting-edge solution designed to provide reliable MRI interpretations with ease. 
+        </p>
+        <h3 style="font-family: 'Georgia', serif;">How It Works:</h3>
+        <div class="steps">
+            <div class="step"><span class="step-icon">1</span> Sign up and go to your dashboard</div>
+            <div class="step"><span class="step-icon">2</span> Register your hospital</div>
+            <div class="step"><span class="step-icon">3</span> Upload knee MRI images</div>
+            <div class="step"><span class="step-icon">4</span> Receive MRI results</div>
+            <div class="step"><span class="step-icon">5</span> Access MRI image history</div>
+        </div>
+        <br>
+        <br>
+        <p style="font-size: 1.2rem; font-family: 'Georgia', serif;">
+            Our AI-powered system ensures quick and accurate MRI analysis, streamlining the workflow for medical professionals and healthcare institutions. 
+            Join us today, register your hospital, and start leveraging the power of AI for precise knee diagnostics!
+        </p>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 KneeLSight. All rights reserved.</p>
+            <p>Contact us: <a href="mailto:info@kneelsight.com">info@kneelsight.com</a></p>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
