@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 
+AUTH_USER_MODEL = "mri.CustomUser"  # Replace 'your_app' with your actual app name
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -78,10 +81,21 @@ WSGI_APPLICATION = "knee_mri_detection.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': 'knee_mri_system',  # Change to your database name
+        'CLIENT': {
+            'host': 'mongodb+srv://ayushthelearner:UN1l6pfBLTtMor5k@cluster0.yuuaurw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+        }
     }
 }
 
@@ -132,5 +146,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
 
 

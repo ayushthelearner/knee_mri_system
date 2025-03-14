@@ -2,7 +2,16 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import MRIImage
+# from django.contrib.auth.admin import UserAdmin
+
+from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from .models import CustomUser
+
+# Register CustomUser with the default Django UserAdmin
+admin.site.register(CustomUser, UserAdmin)
+
+
 from .models import Hospital
 
 admin.site.register(MRIImage)

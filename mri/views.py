@@ -95,11 +95,13 @@ def result(request, pk):
 
 
 
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.contrib import messages
-from django.contrib.auth.hashers import make_password
-from .forms import CustomUserCreationForm
+# from django.shortcuts import render, redirect
+# from django.contrib.auth.models import User
+# from django.contrib import messages
+# from django.contrib.auth.hashers import make_password
+# from .forms import CustomUserCreationForm
+
+# this 
 
 # def user_register(request):
 #     if request.method == "POST":
@@ -115,23 +117,62 @@ from .forms import CustomUserCreationForm
 
 #     return render(request, 'user_register.html', {'form': form})
 
+# this
 
+
+# def user_register(request):
+#     if request.method == 'POST':
+#         form = CustomUserCreationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'User registered successfully. Please log in.')
+#             return redirect('user_login')  # Replace 'user_login' with your actual login URL name
+#     else:
+#         form = CustomUserCreationForm()
+#     return render(request, 'user_register.html', {'form': form})
+
+
+
+# from django.contrib.auth import authenticate, login, logout
+# from django.contrib import messages
+
+# def user_login(request):
+#     if request.method == "POST":
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
+#         user = authenticate(request, username=username, password=password)
+        
+#         if user is not None:
+#             login(request, user)
+#             # messages.success(request, "Login successful.")
+            
+#             storage = messages.get_messages(request)
+#             storage.used = True
+#             return redirect('home')  # Redirect to dashboard after login
+#         else:
+#             messages.error(request, "Invalid username or password.")
+    
+#     return render(request, 'user_login.html')
+
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from .models import CustomUser  # Use CustomUser instead of User
+from .forms import CustomUserCreationForm
 
 def user_register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password1'])  # Ensure password is hashed
+            user.save()
             messages.success(request, 'User registered successfully. Please log in.')
-            return redirect('user_login')  # Replace 'user_login' with your actual login URL name
+            return redirect('user_login')  
     else:
         form = CustomUserCreationForm()
     return render(request, 'user_register.html', {'form': form})
-
-
-
-from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages
 
 def user_login(request):
     if request.method == "POST":
@@ -141,10 +182,7 @@ def user_login(request):
         
         if user is not None:
             login(request, user)
-            # messages.success(request, "Login successful.")
-            
-            storage = messages.get_messages(request)
-            storage.used = True
+            messages.success(request, "Login successful.")
             return redirect('home')  # Redirect to dashboard after login
         else:
             messages.error(request, "Invalid username or password.")
