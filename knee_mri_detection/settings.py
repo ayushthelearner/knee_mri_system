@@ -22,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # this
 ON_RENDER = os.getenv("RENDER") is not None
 
-MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-]
+# MIDDLEWARE = [
+#     "django.middleware.security.SecurityMiddleware",
+# ]
 
-if ON_RENDER:  # Only enable Whitenoise on Render
-    MIDDLEWARE.append("whitenoise.middleware.WhiteNoiseMiddleware")
+# if ON_RENDER:  # Only enable Whitenoise on Render
+#     MIDDLEWARE.append("whitenoise.middleware.WhiteNoiseMiddleware")
 
 # this
 
@@ -59,6 +59,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
