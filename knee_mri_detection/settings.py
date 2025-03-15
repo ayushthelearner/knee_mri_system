@@ -19,6 +19,17 @@ AUTH_USER_MODEL = "mri.CustomUser"  # Replace 'your_app' with your actual app na
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# this
+ON_RENDER = os.getenv("RENDER") is not None
+
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+]
+
+if ON_RENDER:  # Only enable Whitenoise on Render
+    MIDDLEWARE.append("whitenoise.middleware.WhiteNoiseMiddleware")
+
+# this
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -151,6 +162,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"  # This is required for collectstatic
-STATICFILES_DIRS = [BASE_DIR / "static"]  # Your static files directory
 
+# STATIC_ROOT = BASE_DIR / "staticfiles"  # This is required for collectstatic
+# STATICFILES_DIRS = [BASE_DIR / "static"]  # Your static files directory
+
+if ON_RENDER:
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+else:
+    STATICFILES_DIRS = [BASE_DIR / "static"]
