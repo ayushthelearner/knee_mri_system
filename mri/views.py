@@ -27,49 +27,103 @@ from .forms import MRIImageForm
 from .models import MRIImage
 
 # Load the model (ensure it's loaded only once to avoid reloading on every request)
-model = tf.keras.models.load_model('models/my_model.h5')  # Update this path to where you saved your model
+model = tf.keras.models.load_model('models/cnn_model.h5')  # Update this path to where you saved your model
 
+
+# def upload_image(request):
+    
+    
+    
+    
+
+
+#     if request.method == 'POST':
+#         form = MRIImageForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             mri_image = form.save()
+#             mri_image.user = request.user  # Assign the logged-in user
+
+
+#             # Get the file path of the uploaded image from the 'image' field
+#             image_path = mri_image.image.path  # Ensure this is the correct path for your uploaded images
+#             print(f"Image path: {image_path}")
+            
+#             try:
+#                 # Load and preprocess the image
+#                 img = Image.open(image_path)
+#                 img = img.convert('L')  # Convert to grayscale (1 channel)
+#                 img = img.resize((93, 1))  # Resize to 93x1 to match the input shape
+#                 img_array = np.array(img).flatten()  # Flatten the image to a 1D array
+#                 img_array = img_array / 255.0  # Normalize the image values
+#                 img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension (shape: [1, 93])
+
+#                 # Pass the image to the model for prediction
+#                 result = model.predict(img_array)  # This will return the predicted result
+#                 print(f"Prediction result: {result}")
+
+#                 # Optionally, map the result to a human-readable format
+#                 predicted_class = np.argmax(result, axis=-1)  # For classification models
+#                 mri_image.result = f"Analysis Result: Class {predicted_class[0]}"  # Update the result field
+#                 mri_image.save()
+
+#                 # Redirect to the result page with the result
+#                 return redirect('result', pk=mri_image.pk)
+#             except Exception as e:
+#                 # Handle any image processing or prediction errors
+#                 print(f"Error processing image: {e}")
+#                 mri_image.result = f"Error processing image: {e}"
+#                 mri_image.save()
+#                 return redirect('result', pk=mri_image.pk)
+
+#     else:
+#         form = MRIImageForm()
+
+#     return render(request, 'upload.html', {'form': form})
+
+
+
+# this
+
+
+import cv2
+
+# Model is already globally loaded like:
+model = tf.keras.models.load_model('models/cnn_model.h5')
+
+def preprocess_image_for_cnn(img_path):
+    img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+    if img is None:
+        raise ValueError("Image not found or cannot be read.")
+    
+    img = cv2.resize(img, (64, 64))
+    img = img / 255.0  # Normalize
+    img = img.reshape(1, 64, 64, 1)  # CNN expects 4D input: (batch, height, width, channels)
+    return img
 
 def upload_image(request):
-    
-    
-    
-    
-
-
     if request.method == 'POST':
         form = MRIImageForm(request.POST, request.FILES)
         if form.is_valid():
-            mri_image = form.save()
-            mri_image.user = request.user  # Assign the logged-in user
+            mri_image = form.save(commit=False)
+            mri_image.user = request.user
+            mri_image.save()
 
-
-            # Get the file path of the uploaded image from the 'image' field
-            image_path = mri_image.image.path  # Ensure this is the correct path for your uploaded images
+            image_path = mri_image.image.path
             print(f"Image path: {image_path}")
-            
-            try:
-                # Load and preprocess the image
-                img = Image.open(image_path)
-                img = img.convert('L')  # Convert to grayscale (1 channel)
-                img = img.resize((93, 1))  # Resize to 93x1 to match the input shape
-                img_array = np.array(img).flatten()  # Flatten the image to a 1D array
-                img_array = img_array / 255.0  # Normalize the image values
-                img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension (shape: [1, 93])
 
-                # Pass the image to the model for prediction
-                result = model.predict(img_array)  # This will return the predicted result
+            try:
+                # Preprocess and predict
+                img_array = preprocess_image_for_cnn(image_path)
+                result = model.predict(img_array)
                 print(f"Prediction result: {result}")
 
-                # Optionally, map the result to a human-readable format
-                predicted_class = np.argmax(result, axis=-1)  # For classification models
-                mri_image.result = f"Analysis Result: Class {predicted_class[0]}"  # Update the result field
+                predicted_class = np.argmax(result, axis=-1)
+                mri_image.result = f"Analysis Result: Class {predicted_class[0]}"
                 mri_image.save()
 
-                # Redirect to the result page with the result
                 return redirect('result', pk=mri_image.pk)
+
             except Exception as e:
-                # Handle any image processing or prediction errors
                 print(f"Error processing image: {e}")
                 mri_image.result = f"Error processing image: {e}"
                 mri_image.save()
@@ -79,10 +133,6 @@ def upload_image(request):
         form = MRIImageForm()
 
     return render(request, 'upload.html', {'form': form})
-
-
-
-
 
 
 
@@ -160,7 +210,9 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import CustomUser  # Use CustomUser instead of User
 from .forms import CustomUserCreationForm
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def user_register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
